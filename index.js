@@ -1,25 +1,23 @@
 const express = require('express');
 const app = express();
-const { Client } = require('pg');
+const cors = require('cors');
 
-// Postgres
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true
-});
-
-client.connect();
-
-/* client.query('SELECT NOW()', (err, res) => {
-  if (err) console.log(err);
-  // console.log(err, res);
-  client.end();
-}); */
+// Import Routes
+const authRoute = require('./routes/auth');
 
 require('dotenv').config();
+
+// allow cross-origin requests
+app.use(cors());
 
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => res.send('Hello World!'));
+
+// Middleware
+app.use(express.json());
+
+// Route Middlewares
+app.use('/api/user', authRoute);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
