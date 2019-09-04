@@ -61,7 +61,7 @@ router.post('/login', async (req, res) => {
   const existingValue = [req.body.email];
 
   let user = await pool.query(existingText, existingValue);
-  user = rows[0];
+  user = user.rows[0];
   if (!user) return res.status(400).send('Email or password is wrong');
 
   // Check if password is correct
