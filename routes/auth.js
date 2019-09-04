@@ -65,7 +65,6 @@ router.post('/login', async (req, res) => {
   console.log(user);
   if (!user.rows[0]) return res.status(400).send('Email or password is wrong');
 
-  pool.end();
   return res.json(user);
 });
 
