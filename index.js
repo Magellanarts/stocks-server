@@ -4,6 +4,7 @@ const cors = require('cors');
 
 // Import Routes
 const authRoute = require('./routes/auth');
+const userRoute = require('./routes/user');
 
 require('dotenv').config();
 
@@ -19,6 +20,7 @@ app.get('/', (req, res) => res.send('Hello World!'));
 app.use(express.json());
 
 // Route Middlewares
-app.use('/api/user', authRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/user', userRoute);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

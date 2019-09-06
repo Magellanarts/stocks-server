@@ -2,8 +2,11 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const { Pool } = require('pg');
 const uuidv4 = require('uuid/v4');
+const jwt = require('jsonwebtoken');
 
-const { registrationValidation, loginValidation } = require('../validation');
+const { registrationValidation, loginValidation, getUserValidation } = require('../validation');
+
+require('dotenv').config();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -48,16 +51,16 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   // Validate fields
-  console.log('attempt login');
   const { error } = loginValidation(req.body);
+  console.log(req.body);
   if (error) return res.status(400).json(error.details);
 
   // Check if user is already in database
   await pool.connect();
-  console.log('after connect');
 
   // Check if user exists by this email first
-  const existingText = 'SELECT * FROM users WHERE email = $1';
+  const existingText =
+    'SELECT firstname, lastname, email, id, stocks, password FROM users WHERE email = $1';
   const existingValue = [req.body.email];
 
   let user = await pool.query(existingText, existingValue);
@@ -65,12 +68,16 @@ router.post('/login', async (req, res) => {
   if (!user) return res.status(400).send('Email or password is wrong');
 
   // Check if password is correct
-  const validPass = await bcrypt.compare(req.body.password);
+  const validPass = await bcrypt.compare(req.body.password, user.password);
   if (!validPass) return res.status(400).send('Invalid Password');
 
   // Create and assign a token
-  const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET);
-  return res.header('auth-token', token).send({ token, user });
+  const token = jwt.sign(
+    { id: user.id, firstname: user.firstname, lastName: user.lastname, email: user.email },
+    process.env.TOKEN_SECRET
+  );
+  delete user.password;
+  return res.header('authToken', token).send({ token, userId: user.id });
 });
 
 module.exports = router;
