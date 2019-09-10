@@ -39,6 +39,17 @@ const getUserValidation = data => {
   return Joi.validate(data, schema);
 };
 
+// Add Stock Validation
+const addStockValidation = data => {
+  const schema = {
+    symbol: Joi.required(),
+    userId: Joi.string().required()
+  };
+
+  return Joi.validate(data, schema);
+};
+
 module.exports.registrationValidation = registrationValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.getUserValidation = getUserValidation;
+module.exports.addStockValidation = addStockValidation;

@@ -52,7 +52,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   // Validate fields
   const { error } = loginValidation(req.body);
-  console.log(req.body);
+
   if (error) return res.status(400).json(error.details);
 
   // Check if user is already in database
