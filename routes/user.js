@@ -35,7 +35,7 @@ router.post('/getUser', verify, async (req, res) => {
   return res.header('loggedin', true).json(user);
 });
 
-router.post('/addStock', verify, async (req, res) => {
+router.post('/updateStocks', verify, async (req, res) => {
   // Validate fields
   const { error } = addStockValidation(req.body);
   if (error) return res.status(400).json(error.details);
