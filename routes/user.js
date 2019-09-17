@@ -43,18 +43,12 @@ router.post('/updateStocks', verify, async (req, res) => {
   // connect to DB
   await pool.connect();
 
-  console.log(req.body.symbol);
   let symbols = JSON.stringify(req.body.symbol);
-  // symbols = JSON.parse(
-  //   symbols.replace(/(\s*?{\s*?|\s*?,\s*?)(['"])?([a-zA-Z0-9]+)(['"])?:/g, '$1"$3":')
-  // );
 
-  console.log(symbols);
   //Symbol query
   const symbolText = 'UPDATE users set stocks = $1 WHERE id = $2';
   const symbolValues = [symbols, req.body.userId];
 
-  console.log(`UPDATE users set stocks = ${symbols} WHERE id = ${req.body.userId}`);
   // Add symbol to user's stock list
   let symbol = await pool.query(symbolText, symbolValues);
 
