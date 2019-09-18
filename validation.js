@@ -43,6 +43,17 @@ const getUserValidation = data => {
 const addStockValidation = data => {
   const schema = {
     symbol: Joi.required(),
+    timestamp: Joi.required(),
+    userId: Joi.string().required()
+  };
+
+  return Joi.validate(data, schema);
+};
+
+// Add Snapshot Validation
+const addSnapshotValidation = data => {
+  const schema = {
+    snapshots: Joi.required(),
     userId: Joi.string().required()
   };
 
@@ -53,3 +64,4 @@ module.exports.registrationValidation = registrationValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.getUserValidation = getUserValidation;
 module.exports.addStockValidation = addStockValidation;
+module.exports.addSnapshotValidation = addSnapshotValidation;
