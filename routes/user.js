@@ -78,6 +78,3 @@ router.post('/updateSnapshots', verify, async (req, res) => {
 });
 
 module.exports = router;
-
-// TODO: add snapshot feature
-//  includes timestamp and array of stocks
