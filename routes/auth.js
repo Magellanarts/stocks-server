@@ -27,7 +27,8 @@ router.post('/register', async (req, res) => {
   const existingValue = [req.body.email];
 
   const emailExists = await pool.query(existingText, existingValue);
-  if (emailExists) return res.status(400).send('User already exists');
+
+  if (emailExists.rows.exists) return res.status(400).send('User already exists');
 
   // User doesn't exist, so create them
   // Hash password

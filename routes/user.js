@@ -37,7 +37,7 @@ router.post('/getUser', verify, async (req, res) => {
 });
 
 router.post('/updateStocks', verify, async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   // Validate fields
   const { error } = addStockValidation(req.body);
   if (error) return res.status(400).json(error.details);
@@ -46,6 +46,8 @@ router.post('/updateStocks', verify, async (req, res) => {
   await pool.connect();
 
   let symbols = JSON.stringify(req.body.symbol);
+  console.log('submit');
+  console.log(symbols);
 
   //Symbol query
   const symbolText = 'UPDATE users set stocks = $1, lastupdate = $2 WHERE id = $3';
